@@ -3,13 +3,16 @@
   "version": "1.0.0",
   "description": "JavaScript module for pooling objects to handle them as resources allocated by demand",
   "main": "index.js",
-  "files": ["dist/**/*"],
+  "files": [
+    "dist/**/*"
+  ],
   "dependencies": {},
   "devDependencies": {
     "gulp": "^4.0.2"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "gulp"
   },
   "repository": {
     "type": "git",

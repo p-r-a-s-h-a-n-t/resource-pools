@@ -1,3 +1,6 @@
+# Destination folder
+dist
+
 # Logs
 logs
 *.log

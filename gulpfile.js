@@ -1,6 +1,9 @@
-const gulp = require('gulp');
+const {src, dest, series} = require('gulp');
 
-gulp.task('copy'), function() {
-    gulp.src('./src/**/*')
-        .pipe(gulp.dest('./dest/'));
+function build(cb) {
+    src('./src/**/*').pipe(dest('./dist/'));
+    cb();
 }
+
+exports.build = build;
+exports.default = series(build);

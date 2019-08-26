@@ -4,7 +4,6 @@
 This Javascript module introduces a ResourcePool class as an abstraction to manage objects that can be pooled and allocated on demand.
 
 ## Usage
-The only 
 A config object should be passed to the pool constructor:
 ```javascript
 const config = {
@@ -12,6 +11,12 @@ const config = {
     arguments: /* arguments for the pooled objects constructor */,
     maxCount: /* maximum number of objects in the pool */
 }
+const resources = new ResourcePool(config);
+```
+
+Using the resource the is simple as that:
+```javascript
+resources.allocate().then( obj => /* call for an obj action here */)
 ```
 
 Pooled objects must implement the following interface:
@@ -19,7 +24,7 @@ Pooled objects must implement the following interface:
 * emit a specific event on error, when the resource is no longer capable of operating and should be deleted from the pool (referenced by an errorEventSym symbol);
 * have a method to properly be shutdown by the pool object (referenced by a closeMethodSym symbol).
 
-## Example #1, declaration of a pooled 'tedious' connection:
+## Example 1, declaration of a pooled 'tedious' connection:
 ```javascript
 const {Connection} = require('tedious');
 const {readyEventSym, errorEventSym, closeMethodSym} = require('resource-pool');
@@ -40,10 +45,10 @@ class ConnectionResource extends Connection {
 ConnectionResource.prototype[closeMethodSym] = function(...args) { this.close(...args) };
 ```
 
-## Example #2, declaration of a pooled worker:
+## Example 2, declaration of a pooled worker:
 ```javascript
 const {Worker} = require('worker_threads');
-const {readyEventSym, errorEventSym, closeMethodSym} = require('./pools.js');
+const {readyEventSym, errorEventSym, closeMethodSym} = require('resource-pool');
 
 class WorkerResource extends Worker {
     constructor(...args) {

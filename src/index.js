@@ -1,4 +1,4 @@
-const {ResourcePool, idSym, readyEventSym, errorEventSym, closeMethodSym} = require('./resource-pool');
+const {ResourcePool, idSym, readyEventSym, errorEventSym, closeMethodSym} = require('./resource-pools');
 
 exports.ResourcePool = ResourcePool;
 exports.idSym = idSym;

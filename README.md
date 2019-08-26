@@ -1,4 +1,4 @@
-# resource-pool
+# resource-pools
 
 ## Purpose
 This Javascript module introduces a ResourcePool class as an abstraction to manage objects that can be pooled and allocated on demand.
@@ -27,7 +27,7 @@ Pooled objects must implement the following interface:
 ## Example 1, declaration of a pooled 'tedious' connection:
 ```javascript
 const {Connection} = require('tedious');
-const {readyEventSym, errorEventSym, closeMethodSym} = require('resource-pool');
+const {readyEventSym, errorEventSym, closeMethodSym} = require('resource-pools');
 
 class ConnectionResource extends Connection {
     constructor(...args) {
@@ -48,7 +48,7 @@ ConnectionResource.prototype[closeMethodSym] = function(...args) { this.close(..
 ## Example 2, declaration of a pooled worker:
 ```javascript
 const {Worker} = require('worker_threads');
-const {readyEventSym, errorEventSym, closeMethodSym} = require('resource-pool');
+const {readyEventSym, errorEventSym, closeMethodSym} = require('resource-pools');
 
 class WorkerResource extends Worker {
     constructor(...args) {

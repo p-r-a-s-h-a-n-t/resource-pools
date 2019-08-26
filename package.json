@@ -1,5 +1,5 @@
 {
-  "name": "resource-pool",
+  "name": "resource-pools",
   "version": "1.0.0",
   "description": "JavaScript module for pooling objects to handle them as resources allocated by demand",
   "main": "dist/index.js",
@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bitwkit/resource-pool.git"
+    "url": "git+https://github.com/bitwkit/resource-pools.git"
   },
   "keywords": [
     "resource",

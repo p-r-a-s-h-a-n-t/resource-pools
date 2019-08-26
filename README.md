@@ -25,6 +25,9 @@ Pooled objects must implement the following interface:
 * have a method to properly be shutdown by the pool object (referenced by a closeMethodSym symbol).
 
 ## Example 1, declaration of a pooled 'tedious' connection:
+
+This implementation is available as a [**resource-pools-connection** package](https://www.npmjs.com/package/resource-pools-connection)
+
 ```javascript
 const {Connection} = require('tedious');
 const {readyEventSym, errorEventSym, closeMethodSym} = require('resource-pools');
@@ -46,6 +49,9 @@ ConnectionResource.prototype[closeMethodSym] = function(...args) { this.close(..
 ```
 
 ## Example 2, declaration of a pooled worker:
+
+This implementation is available as a [**resource-pools-worker** package](https://www.npmjs.com/package/resource-pools-worker)
+
 ```javascript
 const {Worker} = require('worker_threads');
 const {readyEventSym, errorEventSym, closeMethodSym} = require('resource-pools');

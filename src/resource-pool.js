@@ -1,24 +1,5 @@
 
-// Resource Pools
-/*
-This module introduces a ResourcePool class as an abstraction to manage objects that can be pooled and allocated on demand
-The object should be able to generate two types of events that can be mapped to:
-    'ready' - when the object can be allocated
-    'error' when it can't be allocated anymore
-
-
-The constructor takes a single argument with configuration:
-
-const config = {
-    constructor: <for creating new resource objects>,
-    arguments: <to pass to a resource object constructor>,
-    maxCount: <maximum number of simultaneously present resource objects>,
-    eventMapping: { <to attach to proper event names>
-        'ready': undefined,
-        'error': undefined
-    }
-}
-*/
+// Dependencies
 
 
 // Auxilary declarations

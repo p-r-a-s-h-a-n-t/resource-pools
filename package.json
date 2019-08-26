@@ -1,0 +1,34 @@
+{
+  "name": "resource-pool",
+  "version": "1.0.0",
+  "description": "A Javascript/Typescript module that introduces a ResourcePool class as an abstraction to manage objects that can be pooled and allocated on demand.",
+  "main": "index.js",
+  "files": [
+    "dist/**/*"
+  ],
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bitwkit/resource-pool.git"
+  },
+  "keywords": [
+    "resource",
+    "pool"
+  ],
+  "author": "bitwkit",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bitwkit/resource-pool/issues"
+  },
+  "homepage": "https://github.com/bitwkit/resource-pool#readme",
+  "devDependencies": {
+    "@types/node": "^12.7.2",
+    "typescript": "^3.5.3"
+  }
+}

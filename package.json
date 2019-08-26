@@ -1,0 +1,30 @@
+{
+  "name": "resource-pool",
+  "version": "1.0.0",
+  "description": "JavaScript module for pooling objects to handle them as resources allocated by demand",
+  "main": "index.js",
+  "files": ["dist/**/*"],
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^4.0.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bitwkit/resource-pool.git"
+  },
+  "keywords": [
+    "resource",
+    "pool",
+    "connection",
+    "worker"
+  ],
+  "author": "bitwkit",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bitwkit/resource-pool/issues"
+  },
+  "homepage": "https://github.com/bitwkit/resource-pool#readme"
+}

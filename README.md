@@ -1,2 +1,57 @@
 # resource-pool
-A Javascript/Typescript module that introduces a ResourcePool class as an abstraction to manage objects that can be pooled and allocated on demand.
+
+## Purpose
+This Javascript module introduces a ResourcePool class as an abstraction to manage objects that can be pooled and allocated on demand.
+
+## Usage
+The only 
+A config object should be passed to the pool constructor:
+```javascript
+const config = {
+    constructor: /* reference to the constructor of pooled objects */,
+    arguments: /* arguments for the pooled objects constructor */,
+    maxCount: /* maximum number of objects in the pool */
+}
+```
+
+Pooled objects must implement the following interface:
+* emit a specific event when it is ready to be allocated for the next task (referenced by a readyEventSym symbol);
+* emit a specific event on error, when the resource is no longer capable of operating and should be deleted from the pool (referenced by an errorEventSym symbol);
+* have a method to properly be shutdown by the pool object (referenced by a closeMethodSym symbol).
+
+## Example #1, declaration of a pooled 'tedious' connection:
+```javascript
+const {Connection} = require('tedious');
+const {readyEventSym, errorEventSym, closeMethodSym} = require('resource-pool');
+
+class ConnectionResource extends Connection {
+    constructor(...args) {
+        super(...args);
+        this.once('connect', err => this.emit(err ? errorEventSym : readyEventSym, err) );
+        this.once('error', err => this.emit(errorEventSym, err) );
+        this.once('errorMessage', err => this.emit(errorEventSym, err) );
+    }
+
+    execSql(...[request, rest]) {
+        super.execSql(...[request, rest]);
+        request.once('requestCompleted', () => this.emit(readyEventSym));
+    }
+}
+ConnectionResource.prototype[closeMethodSym] = function(...args) { this.close(...args) };
+```
+
+## Example #2, declaration of a pooled worker:
+```javascript
+const {Worker} = require('worker_threads');
+const {readyEventSym, errorEventSym, closeMethodSym} = require('./pools.js');
+
+class WorkerResource extends Worker {
+    constructor(...args) {
+        super(...args);
+        this.once('online', () => this.emit(readyEventSym) );
+        this.once('error', () => this.emit(errorEventSym) );
+        this.on('message', () => this.emit(readyEventSym) );
+    }
+}
+WorkerResource.prototype[closeMethodSym] = function(...args) { this.terminate(...args) };
+```

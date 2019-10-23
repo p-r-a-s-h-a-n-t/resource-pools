@@ -9,10 +9,15 @@ A config object should be passed to the pool constructor:
 const config = {
     constructor: /* reference to the constructor of pooled objects */,
     arguments: /* arguments for the pooled objects constructor */,
-    maxCount: /* maximum number of objects in the pool */
+    maxCount: /* maximum number of objects in the pool */,
+    log: /* function to which the resource pool object will pass log messages (optional) */
 }
 const resources = new ResourcePool(config);
 ```
+The arguments of log function are **logLevel** and the **message**. Logging levels are:
+0. errors
+1. resource assign / release messages
+2. internal pool events
 
 Using the resource the is simple as that:
 ```javascript

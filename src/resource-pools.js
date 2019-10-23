@@ -23,15 +23,16 @@ class ResourcePool {
         this.busyCount = 0;
         this.allocRequests = [ ];
         this.idGen = idGenerator();
+        this.log = (logLevel, ...args) => { this.config.log && this.config.log(logLevel, ...args) };
     }
 
     addToIdle(obj) {
-        //console.log('add object', obj.constructor.name, ':', obj[idSym], 'to idle pool');
+        this.log(2, 'add object', obj.constructor.name, ':', obj[idSym], 'to idle pool');
         this.idleObjects.push(obj);
     }
 
     deleteFromIdle(obj) {
-        //console.log('delete object', obj.constructor.name, ':', obj[idSym], 'from idle pool');
+        this.log(2, 'delete object', obj.constructor.name, ':', obj[idSym], 'from idle pool');
         const index = this.idleObjects.indexOf(obj);
         if (index >= 0) {
             this.idleObjects.splice(index, 1);
@@ -41,19 +42,19 @@ class ResourcePool {
     }
 
     readyCallback(obj) {
-        console.log('ready callback for object', obj.constructor.name, ':', obj[idSym]);
+        this.log(1, 'ready callback for object', obj.constructor.name, ':', obj[idSym]);
         this.busyCount--;
         this.addToIdle(obj);
         this.processRequests();
     }
 
     errorCallback(obj) {
-        console.log('error callback for object', obj.constructor.name, ':', obj[idSym]);
+        this.log(0, 'error callback for object', obj.constructor.name, ':', obj[idSym]);
         try {
             obj[closeMethodSym]();
         }
         catch (err) {
-            console.log('error calling resourse close method:', err);
+            this.log(0, 'error calling resourse close method:', err);
         };
         if (!this.deleteFromIdle(obj)) this.busyCount--; // if the object was not found in the idle list, it is busy
     }
@@ -62,7 +63,7 @@ class ResourcePool {
         return new Promise((resolve, reject) => {
             const obj = new this.config.constructor(...this.config.arguments);
             obj[idSym] = this.idGen.next().value; // add id to the object
-            console.log('new resource object', obj.constructor.name, ':', obj[idSym]);
+            this.log(1, 'new resource object', obj.constructor.name, ':', obj[idSym]);
 
             this.busyCount++;
 
@@ -79,7 +80,7 @@ class ResourcePool {
     }
 
     allocate() {
-        //console.log('allocating new resource request');
+        this.log(2, 'allocating new resource request');
         return new Promise((resolve, reject) => {
             this.allocRequests.push({resolve, reject});
             this.processRequests();
@@ -87,7 +88,7 @@ class ResourcePool {
     }
 
     processRequests() {
-        //console.log('started request processing');
+        this.log(2, 'started request processing');
         
         // assign pending requests to idle resources if possible
         while ((this.allocRequests.length > 0) && (this.idleObjects.length > 0)) {
@@ -95,21 +96,21 @@ class ResourcePool {
             const obj = this.idleObjects.shift();
             this.busyCount++;
             allocateRequest.resolve(obj);
-            console.log('allocated request to idle resource', obj.constructor.name, ':', obj[idSym]);
+            this.log(1, 'allocated request to idle resource', obj.constructor.name, ':', obj[idSym]);
         };
 
         // create new resources if possible for unprocessed requests
         while ((this.allocRequests.length > 0) && (this.busyCount < this.config.maxCount)) {
-            //console.log('creating new object');
+            this.log(2, 'creating new object');
             const allocateRequest = this.allocRequests.shift();
             this.addObject()
                 .catch( err => allocateRequest.reject(err))
                 .then( obj => {
-                    console.log('allocated request to new resource', obj.constructor.name, ':', obj[idSym]);
+                    this.log(1, 'allocated request to new resource', obj.constructor.name, ':', obj[idSym]);
                     allocateRequest.resolve(obj);
                 });
         };
-        //console.log('ended request processing');
+        this.log(2, 'ended request processing');
     }
 }
 

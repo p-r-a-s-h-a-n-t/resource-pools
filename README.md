@@ -15,9 +15,10 @@ const config = {
 const resources = new ResourcePool(config);
 ```
 The arguments of log function are **logLevel** and the **message**. Logging levels are:
-0. errors
-1. resource assign / release messages
-2. internal pool events
+* 0: errors
+* 1: resource assign / release messages
+* 2: internal pool events
+
 
 Using the resource the is simple as that:
 ```javascript
